@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+
+{% block title %}
+    Home | ShopNest
+{% endblock  %}
+
+{% block css_files %}
+<link rel="stylesheet" href="{% static "home.css" %}">{% endblock css_files %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-lg-5">
+                <div class="intro-excerpt">
+                    <h1>Modern Interior <span clsas="d-block">Design Studio</span></h1>
+                    <p class="mb-4">Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique.</p>
+                    <p><a href="{% url "shop" %}" class="btn btn-secondary rounded-pill me-2">Shop Now</a></p>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="hero-img-wrap">
+                    <img src="{% static "images/couch.png" %}" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="product-section">
+    <div class="container">
+        <div class="row">
+            <!-- Start Column 1 -->
+					<div class="col-md-12 col-lg-3 mb-5 mb-lg-0">
+						<h2 class="mb-4 section-title">Crafted with excellent material.</h2>
+						<p class="mb-4">Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. </p>
+						<p><a href="{% url "shop" %}" class="btn btn-secondary rounded-pill">Explore</a></p>
+					</div> 
+					<!-- End Column 1 -->
+
+					<!-- Start Column 2 -->
+                    {% for product in products %}
+                    <div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
+						<a class="product-item" href="{% url "product-detail-page" product.slug %}">
+							<img src="{{product.image.url}}" alt="{{product.name}}" class="img-fluid product-thumbnail">
+							<h3 class="product-title">{{product.name}}</h3>
+							<strong class="product-price">${{product.price}}</strong>
+
+							<span class="icon-cross">
+								<img src="{% static "images/cross.svg" %}" class="img-fluid">
+							</span>
+						</a>
+					</div> 
+                    {% endfor %}
+					
+					<!-- End Column 2 -->
+
+			
+
+        </div>
+    </div>
+</section>
+
+<section class="why-choose-section">
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-lg-6">
+                <h2 class="section-title">Why Choose Us</h2>
+                <p>Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique.</p>
+
+                <div class="row my-5">
+                    <div class="col-6 col-md-6">
+                        <div class="feature">
+                            <div class="icon">
+                                <img src="{% static "images/truck.svg" %}" alt="Image" class="imf-fluid">
+                            </div>
+                            <h3>Fast &amp; Free Shipping</h3>
+                            <p>Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-6">
+                        <div class="feature">
+                            <div class="icon">
+                                <img src="{% static "images/bag.svg" %}" alt="Image" class="imf-fluid">
+                            </div>
+                            <h3>Easy to Shop</h3>
+                            <p>Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-6">
+                        <div class="feature">
+                            <div class="icon">
+                                <img src="{% static "images/support.svg" %}" alt="Image" class="imf-fluid">
+                            </div>
+                            <h3>24/7 Support</h3>
+                            <p>Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-6">
+                        <div class="feature">
+                            <div class="icon">
+                                <img src="{% static "images/return.svg" %}" alt="Image" class="imf-fluid">
+                            </div>
+                            <h3>Hassle Free Returns</h3>
+                            <p>Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="img-wrap">
+                    <img src="{% static "images/why-choose-us-img.jpg" %}" alt="Image" class="img-fluid">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<!-- Start We Help Section -->
+<section class="we-help-section">
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-lg-7 mb-5 mb-lg-0">
+                <div class="imgs-grid">
+                    <div class="grid grid-1"><img src="{% static "images/img-grid-1.jpg" %}" alt="Untree.co"></div>
+                    <div class="grid grid-2"><img src="{% static "images/img-grid-2.jpg" %}" alt="Untree.co"></div>
+                    <div class="grid grid-3"><img src="{% static "images/img-grid-3.jpg" %}" alt="Untree.co"></div>
+                </div>
+            </div>
+            <div class="col-lg-5 ps-lg-5">
+                <h2 class="section-title mb-4">We Help You Make Modern Interior Design</h2>
+                <p>Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. Pellentesque habitant morbi tristique senectus et netus et malesuada</p>
+
+                <ul class="list-unstyled custom-list my-4">
+                    <li>Donec vitae odio quis nisl dapibus malesuada</li>
+                    <li>Donec vitae odio quis nisl dapibus malesuada</li>
+                    <li>Donec vitae odio quis nisl dapibus malesuada</li>
+                    <li>Donec vitae odio quis nisl dapibus malesuada</li>
+                </ul>
+                {% comment %} <a herf="{% url "shop" %}" class="btn btn-secondary rounded-pill px-5 py-3">Explore</a> {% endcomment %}
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End We Help Section -->
+
+{% endblock  %}

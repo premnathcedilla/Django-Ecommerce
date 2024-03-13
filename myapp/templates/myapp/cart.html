@@ -1,0 +1,214 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Your Cart | ShopNest{% endblock  %}
+{% block css_files %}
+    <link rel="stylesheet" href="{% static "cart.css" %}">
+{% endblock  %}
+
+{% block content %}
+    <!-- Start Hero Section -->
+			<section class="hero">
+				<div class="container">
+					<div class="row justify-content-between">
+						<div class="col-lg-5">
+							<div class="intro-excerpt">
+								<h1>Cart</h1>
+							</div>
+						</div>
+						<div class="col-lg-7">
+							
+						</div>
+					</div>
+				</div>
+			</section>
+
+            
+		<section class="untree_co-section before-footer-section">
+            <div class="container">
+              <div class="row mb-5">
+                <div class="col-md-6">
+                  <a href="{% url "shop" %}"><button class="btn btn-outline-dark rounded-pill px-3" >Continue Shopping</button></a>
+                </div>
+              </div>
+              <div class="row mb-5">
+                <form class="col-md-12" method="post">
+                  <div class="site-blocks-table">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th class="product-thumbnail">Image</th>
+                          <th class="product-name">Product</th>
+                          <th class="product-price">Price</th>
+                          <th class="product-quantity">Quantity</th>
+                          <th class="product-total">Total</th>
+                          <th class="product-remove">Remove</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for cart_item in cart_items  %}
+                        <tr id="cart-item-{{cart_item.id}}">
+                            <td class="product-thumbnail">
+                              <img src="{{cart_item.product.image.url}}" alt="{{cart_item.product.name}}" class="img-fluid">
+                            </td>
+                            <td class="product-name">
+                              <h2 class="h5 text-black">{{cart_item.product.name}}</h2>
+                            </td>
+                            <td>${{cart_item.product.price}}</td>
+                            <td>
+                              <div class="input-group mb-3 d-flex align-items-center quantity-container mx-auto" style="max-width: 120px;">
+                                  <div class="amount-container">
+                                      <i class="fa-solid fa-minus mx-2" onclick="decrementAmount({{cart_item.id}})" ></i>
+                                      <input type="text" class="product-amount" id="amount-{{cart_item.id}}" value="{{cart_item.quantity}}" readonly>
+                                      <i class="fa-sharp fa-solid fa-plus mx-2" onclick="incrementAmount({{cart_item.id}})"></i>
+                                    </div>
+                              </div>
+          
+                            </td>
+                            <td id="total-cost-{{cart_item.id}}">${{ cart_item.total_cost }}</td>
+                            <td>
+                              <form method="POST">
+                                    {% csrf_token %}
+                                    <button class="btn-close" aria-label="Close" onclick="deleteCartItem({{ cart_item.id }})"></button>
+                              </form>
+                            </td>
+                          </tr>
+                        {% endfor %}
+        
+                      </tbody>
+                    </table>
+                  </div>
+                </form>
+              </div>
+        
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <h3 class="text-black h4 text-uppercase">Address</h3>
+                      <hr>
+                      <p>{{user_details.first_name}} {{user_details.last_name}}</p>
+                      <p>{{user_details.address}}</p>
+                      <p>{{user_details.phone_number}}</p>
+                    </div>
+                    <div class="col-md-4 d-flex align-items-center">
+                      <a href="{% url "update-profile" %}"><button class="btn btn-outline-secondary" >Change Address</button></a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 pl-5">
+                  <div class="row justify-content-end">
+                    <div class="col-md-7">
+                      <div class="row">
+                        <div class="col-md-12 text-right mb-5">
+                          <h3 class="text-black h4 text-uppercase">Cart Total</h3>
+                          <hr>
+                        </div>
+                      </div>
+                      <div class="row mb-3">
+                        <div class="col-md-6">
+                          <span class="text-black">Subtotal</span>
+                        </div>
+                        <div class="col-md-6 text-right">
+                          <strong class="text-black cart-total">${{total_cost}}</strong>
+                        </div>
+                      </div>
+                      <div class="row mb-5">
+                        <div class="col-md-6">
+                          <span class="text-black">Total</span>
+                        </div>
+                        <div class="col-md-6 text-right">
+                          <strong class="text-black cart-total" id="cart-total">${{total_cost}}</strong>
+                        </div>
+                      </div>
+        
+                      <div class="row">
+                        <div class="col-md-12">
+                          <form action="payment/" method='POST'>
+                            {% csrf_token %} 
+                            <button class="btn btn-outline-success p-3 fw-bold" {% if total_cost == 0 or user_details.first_name|length == 0 %}disabled{% endif %}
+                            >Proceed To Checkout</button>
+                          </form>
+                          
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </section>
+{% endblock  %}
+
+{% block script_files %}
+        <script>
+          function decrementAmount(id) {
+            var amountInput = document.getElementById("amount-" + id);
+            var currentAmount = parseInt(amountInput.value);
+            if (currentAmount > 1) {
+              amountInput.value = currentAmount - 1;
+              newQuantity = amountInput.value
+              updateQuantity(id, newQuantity)
+
+            }
+          }
+        
+          function incrementAmount(id) {
+            var amountInput = document.getElementById("amount-"+ id );
+            var currentAmount = parseInt(amountInput.value);
+            amountInput.value = currentAmount + 1;
+            newQuantity = amountInput.value
+            updateQuantity(id, newQuantity)
+          }
+
+          function updateQuantity(id, newQuantity) {
+            var csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
+            $.ajax({
+              url: `/update-cart-item/${id}`,
+              type: 'POST',
+              headers: {
+                'X-CSRFToken': csrfToken
+              },
+              data: {
+                quantity: newQuantity
+              },
+              success: function(response) {
+                var totalCost = response.total_cost;
+                var cartTotalCost = response.cart_total
+                $('#total-cost-' + id).text(`$${totalCost}`);
+                $('.cart-total').text(`$${cartTotalCost}`)
+              },
+              error: function(xhr, status, error) {
+                // Handle error
+                console.error('Error updating quantity:', error);
+            }
+            })
+
+          }
+
+          function deleteCartItem(cartItemId) {
+            var csrftoken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+        
+            $.ajax({
+                url: `/cart/${cartItemId}/`,
+                type: 'DELETE',
+                headers: {
+                    'X-CSRFToken': csrftoken
+                },
+                success: function(response) {
+                    // Handle success, e.g., update the UI
+                    $('#cart-item-' + cartItemId).remove();
+                },
+                error: function(xhr, status, error) {
+                    // Handle error
+                    console.error('Error deleting item:', error);
+                }
+            });
+            return false;
+        }
+        
+       
+
+        </script>
+{% endblock %}

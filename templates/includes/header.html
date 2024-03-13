@@ -1,0 +1,33 @@
+{% load static %}
+
+<nav class="custom-navbar navbar navbar navbar-expand-lg navbar-dark bg-dark" arial-label="Furni navigation bar">
+
+    <div class="container">
+      <a class="navbar-brand" href="{% url "home" %}">ShopNest<span>.</span></a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni" aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarsFurni">
+        <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
+          <li class="nav-item {% if is_active == "home" %}active{% endif %}">
+            <a class="nav-link" href="{% url "home" %}">Home</a>
+          </li>
+          <li class="nav-item {% if is_active == "shop" %}active{% endif %}"><a class="nav-link" href="{% url "shop" %}">Shop</a></li>
+          <li class="nav-item {% if is_active == "about" %}active{% endif %}"><a class="nav-link" href="{% url "about" %}">About us</a></li>
+          <li class="nav-item {% if is_active == "profile" %}active{% endif %}"><a class="nav-link" href="{% url "update-profile" %}">Profile</a></li>
+          <li class="nav-item {% if is_active == "contact" %}active{% endif %}"><a class="nav-link" href="{% url "contact" %}">Contact us</a></li>
+        </ul>
+        
+        <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
+          <li class=" me-5 {% if not request.user.is_authenticated %}d-none{% endif %}"><a class="nav-link position-relative" href="{% url "cart" %}"><img src="{% static "images/cart.svg" %}" ><span class="position-absolute top-10 start-90 translate-middle badge rounded-pill bg-danger" id="cart-count">
+           {% if not cart_count%}0 {% else %} {{cart_count}}{% endif %}
+            <span class="visually-hidden">unread messages</span>
+          </span></a></li>
+          <li><a class="log_btn btn-secondary" href="{% url "logout" %}">{% if request.user.is_authenticated %}Logout {% else %}Login{% endif %}</a></li>
+        </ul>
+      </div>
+    </div>
+      
+  </nav>

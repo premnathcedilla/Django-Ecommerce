@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Shop | ShopNest{% endblock  %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-lg-5">
+                <div class="intro-excerpt">
+                    <h1>Shop</h1>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                
+            </div>
+        </div>
+    </div>
+</section>
+<section class="untree_co-section product-section before-footer-section">
+    <div class="container">
+          <div class="row">
+              <!-- Start Column 1 -->
+              {% for product in products %}
+            <div class="col-12 col-md-4 col-lg-3 mb-5 mx-auto">
+                <a class="product-item" href="{% url "product-detail-page" product.slug %}">
+                    <img src="{{product.image.url}}" class="img-fluid product-thumbnail" alt="{{product.name}}">
+                    <h3 class="product-title"> {{product.name}} </h3>
+                    <strong class="product-price">${{product.price}} </strong>
+                    <span class="icon-cross">
+                        <img src="{% static "images/cross.svg" %}" class="img-fluid">
+                    </span>
+                </a>
+            </div> 
+            {% endfor %}
+            <!-- End Column 1 -->
+          </div>
+          <div class='row'>
+            <div class="col-6 mx-auto text-center pagination-btn">
+                {% if products.has_previous %}
+                    <button><a href="?page={{products.previous_page_number}}" >Prev</a></button>
+                    {% else %}
+                    <button disabled>Prev</button>
+                {% endif %}
+                <span>{{products.number}}</span>
+                {% if products.has_next %}
+                <button><a href="?page={{products.next_page_number}}">Next</a></button>
+                {% else %}
+                <button disabled>Next</button>
+                {% endif %}
+            </div>
+          </div>
+    </div>
+</section>
+{% endblock  %}

@@ -1,0 +1,29 @@
+.profile_con{
+    padding: 5rem;
+}
+
+.form-area {
+    margin: 2rem 0;
+}
+.form-area label {
+    display: block;
+    font-size: 18px;
+    font-weight: 600;
+    color: #3b5d50;
+    text-align: left;
+}
+
+.form-area input {
+    padding: 0.5rem;
+    width: 100%;
+    outline: none;
+    border:  1px solid lightgray;
+    border-radius: 8px;
+    font: inherit;
+}
+
+.form-area input:focus {
+    border: 1px solid #3b5d50;
+    outline: none;
+    background-color:rgb(233, 233, 235);
+}

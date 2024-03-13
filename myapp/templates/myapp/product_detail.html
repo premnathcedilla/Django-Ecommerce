@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}{{product.name}} | ShopNest{% endblock  %}
+
+{% block css_files %}
+    <link rel="stylesheet" href="{% static "product_detail.css" %}">
+{% endblock  %}
+
+{% block content %}
+<section class="hero">
+  <div class="container">
+    <div class="row justify-content-between">
+      <div class="col-lg-5">
+        <div class="intro-excerpt">
+          <h1>{{product.name}}</h1>
+        </div>
+      </div>
+      <div class="col-lg-7">
+        
+      </div>
+    </div>
+  </div>
+</section>
+<div class="container">
+    <div class="wrapper row">
+      <div class="img-container col-lg-6">
+        <img src="{{product.image.url}}" alt="{{product.name}}" class="image-prod">
+      </div>
+      <div class="info-container col-lg-6">
+        <h1 class="prod-title">{{product.name}}</h1>
+        <p class="desc">{{product.description}}</p>
+        <span class="product-price">$ {{product.price}}</span>
+        {% comment %} <div class="filter-container">
+          <div class="filter">
+            <span class="filter-title">Color</span>
+            <div class="filter-color" style="background-color: black;"></div>
+            <div class="filter-color" style="background-color: darkblue;"></div>
+            <div class="filter-color" style="background-color: gray;"></div>
+          </div>
+          <div class="filter">
+            <span class="filter-title">Size</span>
+            <select class="filter-size">
+              <option>XS</option>
+              <option>S</option>
+              <option>M</option>
+              <option>L</option>
+              <option>XL</option>
+            </select>
+          </div>
+        </div> {% endcomment %}
+        <div class="add-container mt-5 ">
+            <div class="amount-container">
+              
+                <i class="fa-solid fa-minus mx-2" onclick="decrementAmount()"></i>
+                <form method="POST">
+                  {% csrf_token %}
+                  <input type="text" class="product-amount" id="amount" value="1" readonly>
+                </form>
+                <i class="fa-sharp fa-solid fa-plus mx-2" onclick="incrementAmount()"></i>
+              </div>
+          <button class="add-to-cart rounded-pill">Add to cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock  %}
+
+{% block script_files %}
+<script>
+    function decrementAmount() {
+      var amountInput = document.getElementById("amount");
+      var currentAmount = parseInt(amountInput.value);
+      if (currentAmount > 1) {
+        amountInput.value = currentAmount - 1;
+      }
+    }
+  
+    function incrementAmount() {
+      var amountInput = document.getElementById("amount");
+      var currentAmount = parseInt(amountInput.value);
+      amountInput.value = currentAmount + 1;
+    }
+
+
+    $(document).ready(function() {
+      $('.add-to-cart').click(function(event) {
+          event.preventDefault(); // Prevent default form submission behavior
+  
+          // Make AJAX request to add item to cart
+          $.ajax({
+              url: '/add-to-cart/',
+              type: 'POST',
+              headers: {
+                  'X-CSRFToken': $('input[name="csrfmiddlewaretoken"]').val()
+              },
+              data: {
+                  product_id: "{{ product.id }}",
+                  quantity: parseInt($('#amount').val())
+              },
+              success: function(response) {
+                  // Handle success
+                  if (response.message){
+                    Swal.fire({
+                      title: response.message,
+                      text: "Please login to add the product to the cart",
+                      icon: "error"
+                    })
+                  }
+                  var cartNumber = response.cart_number;
+                  $('#cart-count').text(cartNumber);
+              },
+              error: function(xhr, status, error) {
+                  // Handle error
+                  console.error('Error adding to cart:', error);
+              }
+          });
+      });
+  });
+  
+  
+
+  </script>
+  
+{% endblock  %}

@@ -1,0 +1,16 @@
+.amount-container {
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+  }
+  
+  .amount-container i {
+    cursor: pointer;
+    font-size: 18px;
+  }
+  
+  .amount-container input{
+    width: 30%;
+    margin: auto;
+    text-align: center;
+  }

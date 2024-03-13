@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Update Profile | ShopNest{% endblock  %}
+{% block css_files %}
+<link rel="stylesheet" href="{% static "update_profile.css" %}">
+{% endblock  %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-lg-5">
+                <div class="intro-excerpt">
+                    <h1>Profile</h1>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                
+            </div>
+        </div>
+    </div>
+</section>
+    <div class="container profile_con">
+        <div class="row">
+            <div class="col-lg-6 mx-auto text-center">
+    <form method="POST">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class='form-area'>
+            {{field.label_tag}}
+            {{field}}
+            {{field.errors}}
+        </div>
+        {% endfor %}
+        <button type="submit"  class="btn btn-dark px-5 py-3 rounded-pill">Update Profile</button>
+    </form>
+</div>
+</div>
+</div>
+
+
+{% endblock  %}
